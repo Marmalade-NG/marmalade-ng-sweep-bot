@@ -1,8 +1,8 @@
 # marmalade-ng-sweep-bot
 
-Bot for test purpose only.
+Bot for test/example purpose only.
 
-Terminate/withdraw sales on MArmalade NG
+Terminate/withdraw sales on Marmalade-NG
 
 ## Action
 
@@ -12,4 +12,17 @@ Terminate/withdraw sales on MArmalade NG
 
 **Auction sales:**
 - Withdraw timed out sales with no bid.
-- Terminates timed out sales with at least one bid. 
+- Terminates timed out sales with at least one bid.
+
+
+## Configuration
+
+All configuration variables resides in `config.yaml`
+
+
+## Running
+
+ ```
+ yarn install
+ yarn run bot
+ ```

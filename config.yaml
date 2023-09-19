@@ -1,0 +1,8 @@
+namespace: n_442d3e11cfe0d39859878e5b1520cd8b8c36e5db
+network: testnet04
+chain: "1"
+node: https://api.testnet.chainweb.com
+gas_payer: k:01431b286a4e56516f4bed0afdc251c72038f7c66eeee1c1b5adcc83473951e5
+gas_payer_key:
+  publicKey: 01431b286a4e56516f4bed0afdc251c72038f7c66eeee1c1b5adcc83473951e5
+  secretKey: 8f105a9015f752d31c0dd91c01e80a6215bc1ca35b2bdaa551b89da1a0157b19

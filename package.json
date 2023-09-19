@@ -1,0 +1,16 @@
+{
+  "name": "marmalade-ng-sweep",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "author": "Pascal",
+  "license": "MIT",
+  "scripts":{
+      "bot": "node index.js"
+    },
+  "dependencies": {
+    "@kadena/client": "^1.4.0",
+    "@kadena/cryptography-utils": "^0.3.8",
+    "yaml": "^2.3.2"
+  }
+}
