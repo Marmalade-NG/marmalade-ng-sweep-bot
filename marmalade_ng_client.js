@@ -1,5 +1,4 @@
-import {createClient, Pact, addSignatures} from '@kadena/client'
-import {signHash} from '@kadena/cryptography-utils';
+import {createClient, Pact, createSignWithKeypair} from '@kadena/client'
 
 /* Ugly workaround for this issue
    https://github.com/kadena-community/kadena.js/issues/935
@@ -15,7 +14,9 @@ export class MarmaladeNGClient
   #chain;
   #namespace;
   #gas_payer;
-  #gas_key;
+  #gas_payer_key;
+  #signing;
+
   #local_meta;
 
   constructor({node, network, chain, namespace, gas_payer, gas_payer_key})
@@ -25,7 +26,9 @@ export class MarmaladeNGClient
     this.#client = createClient(`${node}/chainweb/0.0/${network}/chain/${chain}/pact`);
     this.#namespace = namespace;
     this.#gas_payer = gas_payer;
-    this.#gas_key = gas_payer_key;
+    this.#gas_payer_key = gas_payer_key.publicKey;
+    this.#signing = createSignWithKeypair(gas_payer_key);
+
   }
 
 
@@ -50,19 +53,24 @@ export class MarmaladeNGClient
     return this.local_check(cmd, {signatureVerification:false, preflight:false})
   }
 
+  async preflight(trx)
+  {
+    console.log(`Transaction Hash: ${trx.hash}`)
+    const res = await this.local_check(trx, {signatureVerification:true, preflight:true})
+    console.log(`Local result: ${res}`)
+    return trx;
+  }
+
   sign_and_send(cmd)
   {
     const trx = cmd.setMeta({chainId:this.#chain, sender:this.#gas_payer})
                    .setNetworkId(this.#network)
-                   .addSigner(this.#gas_key.publicKey, (withCapability) => [withCapability('coin.GAS')])
+                   .addSigner(this.#gas_payer_key, (withCapability) => [withCapability('coin.GAS')])
                    .createTransaction()
 
-    const signed_trx = addSignatures(trx, signHash(trx.hash, this.#gas_key))
-
-    console.log(`Transaction Hash: ${trx.hash}`)
-    return this.local_check(signed_trx, {signatureVerification:true, preflight:true})
-               .then((res) => {console.log(`Local result: ${res}`)})
-               .then(() => {return this.#client.send(signed_trx);})
+    return this.#signing(trx)
+               .then((x) => this.preflight(x))
+               .then((x) => this.#client.send(x))
   }
 
   current_time()
