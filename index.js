@@ -11,7 +11,7 @@ async function main()
   const marmalade = new MarmaladeNGClient(config)
 
   await marmalade.sweep()
-  setInterval( async () => {await marmalade.sweep()},120*1000)
+  setInterval( async () => {await marmalade.sweep()},30*1000)
 }
 
 main()
