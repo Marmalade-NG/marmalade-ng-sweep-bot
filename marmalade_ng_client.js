@@ -17,8 +17,6 @@ export class MarmaladeNGClient
   #gas_payer_key;
   #signing;
 
-  #local_meta;
-
   constructor({node, network, chain, namespace, gas_payer, gas_payer_key})
   {
     this.#network = network
