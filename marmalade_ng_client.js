@@ -17,6 +17,8 @@ export class MarmaladeNGClient
   #gas_payer_key;
   #signing;
 
+  #sales_map;
+
   constructor({node, network, chain, namespace, gas_payer, gas_payer_key})
   {
     this.#network = network
@@ -26,9 +28,21 @@ export class MarmaladeNGClient
     this.#gas_payer = gas_payer;
     this.#gas_payer_key = gas_payer_key.publicKey;
     this.#signing = createSignWithKeypair(gas_payer_key);
+    this.#sales_map = new Map()
 
   }
 
+  already_ended(sale_id)
+  {
+    if(this.#sales_map.has(sale_id))
+      return true;
+    else
+    {
+      this.#sales_map.set(sale_id, true);
+      setTimeout(()=> this.#sales_map.delete(sale_id), 300 * 1000);
+      return false;
+    }
+  }
 
   local_check(cmd, options)
   {
@@ -103,6 +117,8 @@ export class MarmaladeNGClient
   async end_auction(sale)
   {
     const {"sale-id":sale_id, "current-buyer":buyer, "token-id":token_id} = sale;
+    if(this.already_ended(sale_id))
+      return;
     console.log(`Ending ${sale_id}`)
 
     let cmd;
@@ -128,6 +144,8 @@ export class MarmaladeNGClient
   withdraw_sale(sale)
   {
     const {"sale-id":sale_id} = sale
+    if(this.already_ended(sale_id))
+      return;
     console.log(`Ending ${sale_id}`)
 
     const cmd = Pact.builder.continuation({pactId:sale_id, step:0, rollback:true, proof:NULL_PROOF})
