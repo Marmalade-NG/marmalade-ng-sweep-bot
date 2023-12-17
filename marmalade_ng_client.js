@@ -116,7 +116,7 @@ export class MarmaladeNGClient
 
   async end_auction(sale)
   {
-    const {"sale-id":sale_id, "current-buyer":buyer, "token-id":token_id} = sale;
+    const {"sale-id":sale_id, "current-buyer":buyer, "token-id":token_id, "shared-fee":shared_fee} = sale;
     if(this.already_ended(sale_id))
       return;
     console.log(`Ending ${sale_id}`)
@@ -130,6 +130,7 @@ export class MarmaladeNGClient
       cmd = Pact.builder.continuation({pactId:sale_id, step:1, rollback:false, proof:NULL_PROOF})
                         .setMeta({gasLimit:10000})
                         .addData("buyer",buyer)
+                        .addData("marmalade_shared_fee",shared_fee)
                         .addData("buyer-guard",buyer_guard)
     }
     else
