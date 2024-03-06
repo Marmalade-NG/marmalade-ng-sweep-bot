@@ -1,10 +1,5 @@
 import {createClient, Pact, createSignWithKeypair} from '@kadena/client'
 
-/* Ugly workaround for this issue
-   https://github.com/kadena-community/kadena.js/issues/935
-*/
-const NULL_PROOF = {replace:()=>null}
-
 const LOCAL_GAS_LIMIT = 150000
 
 export class MarmaladeNGClient
@@ -135,7 +130,7 @@ export class MarmaladeNGClient
 
       const buyer_guard = await this.local_pact(`(${this.#namespace}.ledger.account-guard "${token_id}" "${buyer}")`)
 
-      cmd = Pact.builder.continuation({pactId:sale_id, step:1, rollback:false, proof:NULL_PROOF})
+      cmd = Pact.builder.continuation({pactId:sale_id, step:1, rollback:false, proof:null})
                         .setMeta({gasLimit:10000})
                         .addData("buyer",buyer)
                         .addData("marmalade_shared_fee",shared_fee)
@@ -143,7 +138,7 @@ export class MarmaladeNGClient
     }
     else
     {
-      cmd = Pact.builder.continuation({pactId:sale_id, step:0, rollback:true, proof:NULL_PROOF})
+      cmd = Pact.builder.continuation({pactId:sale_id, step:0, rollback:true, proof:null})
                         .setMeta({gasLimit:10000})
     }
 
@@ -157,7 +152,7 @@ export class MarmaladeNGClient
       return;
     console.log(`Ending ${sale_id}`)
 
-    const cmd = Pact.builder.continuation({pactId:sale_id, step:0, rollback:true, proof:NULL_PROOF})
+    const cmd = Pact.builder.continuation({pactId:sale_id, step:0, rollback:true, proof:null})
                             .setMeta({gasLimit:10000})
 
     return this.sign_and_send(cmd)
