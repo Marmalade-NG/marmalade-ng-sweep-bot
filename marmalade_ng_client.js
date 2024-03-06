@@ -88,6 +88,14 @@ export class MarmaladeNGClient
   current_time()
   {
     return this.local_pact("(free.util-time.now)")
+               .then(x => new Date(x.timep));
+  }
+
+  check_node_time()
+  {
+    const now = new Date()
+    return this.current_time().then(x => now.getTime()-x.getTime())
+                              .then(x => x<120_000)
   }
 
   get_ended_auction_sales()
@@ -161,6 +169,12 @@ export class MarmaladeNGClient
     console.log("-------------------------")
     console.log("   Start a sweep round   ")
     console.log("-------------------------")
+    if(!await this.check_node_time())
+    {
+      console.log("Node is not up-to-date => Cancel")
+      return
+    }
+
     console.log("Fixed Sales")
     const fixed_sales = await this.get_ended_fixed_sales()
 
