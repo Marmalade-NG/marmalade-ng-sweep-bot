@@ -131,7 +131,7 @@ export class MarmaladeNGClient
       const buyer_guard = await this.local_pact(`(${this.#namespace}.ledger.account-guard "${token_id}" "${buyer}")`)
 
       cmd = Pact.builder.continuation({pactId:sale_id, step:1, rollback:false, proof:null})
-                        .setMeta({gasLimit:10000})
+                        .setMeta({gasLimit:6000})
                         .addData("buyer",buyer)
                         .addData("marmalade_shared_fee",shared_fee)
                         .addData("buyer-guard",buyer_guard)
@@ -139,7 +139,7 @@ export class MarmaladeNGClient
     else
     {
       cmd = Pact.builder.continuation({pactId:sale_id, step:0, rollback:true, proof:null})
-                        .setMeta({gasLimit:10000})
+                        .setMeta({gasLimit:6000})
     }
 
     await this.sign_and_send(cmd)
@@ -153,7 +153,7 @@ export class MarmaladeNGClient
     console.log(`Ending ${sale_id}`)
 
     const cmd = Pact.builder.continuation({pactId:sale_id, step:0, rollback:true, proof:null})
-                            .setMeta({gasLimit:10000})
+                            .setMeta({gasLimit:6000})
 
     return this.sign_and_send(cmd)
   }
