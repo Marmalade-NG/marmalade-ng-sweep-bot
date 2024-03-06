@@ -1,6 +1,14 @@
 import {createClient, Pact, createSignWithKeypair} from '@kadena/client'
+import {getRandomValues} from 'crypto'
 
 const LOCAL_GAS_LIMIT = 150000
+
+export function make_nonce()
+{
+  const a = new Uint8Array(8);
+  getRandomValues(a);
+  return "NGB:" + Array.from(a, (x)=>x.toString(16)).join('');
+}
 
 export class MarmaladeNGClient
 {
@@ -72,6 +80,7 @@ export class MarmaladeNGClient
   {
     const trx = cmd.setMeta({chainId:this.#chain, sender:this.#gas_payer})
                    .setNetworkId(this.#network)
+                   .setNonce(make_nonce)
                    .addSigner(this.#gas_payer_key, (withCapability) => [withCapability('coin.GAS')])
                    .createTransaction()
 
