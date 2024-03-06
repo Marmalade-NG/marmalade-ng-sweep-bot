@@ -19,10 +19,17 @@ Terminate/withdraw sales on Marmalade-NG
 
 All configuration variables resides in `config.yaml`
 
-
 ## Running
 
  ```
  yarn install
  yarn run bot
  ```
+
+## Alternate Config file
+
+It's possible to use another configuration file (other than `config.yaml`) by adding it to the command line
+
+```
+yarn run bot alternate_config.yaml
+```

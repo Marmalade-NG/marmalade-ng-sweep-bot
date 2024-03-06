@@ -4,8 +4,10 @@ import {readFile} from 'fs/promises';
 
 async function main()
 {
+  const config_file = process.argv?.[2]??"config.yaml";
   console.log("Loading config...")
-  const config = await readFile("config.yaml", "ascii").then(YAML.parse)
+
+  const config = await readFile(config_file, "ascii").then(YAML.parse)
   console.log(config)
 
   const marmalade = new MarmaladeNGClient(config)
