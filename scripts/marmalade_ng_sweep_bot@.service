@@ -1,0 +1,17 @@
+[Unit]
+Description=Marmalade NG Sweep Bot
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Environment=SYSTEMD_LOG_LEVEL=debug
+User=marmalade_ng
+KillMode=process
+KillSignal=SIGINT
+Nice=19
+WorkingDirectory=/home/marmalade_ng
+ExecStart=node marmalade_ng_sweep_bot.js %i.yaml
+Restart=always
+RestartSec=30
+LimitNOFILE=65536
+[Install]
+WantedBy=multi-user.target
