@@ -33,3 +33,11 @@ It's possible to use another configuration file (other than `config.yaml`) by ad
 ```
 yarn run bot alternate_config.yaml
 ```
+
+## Create a bundle
+
+You can create an independent bundle (in the dist directory):
+
+```
+yarn bundle
+```

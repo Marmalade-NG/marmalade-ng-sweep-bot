@@ -5,12 +5,16 @@
   "type": "module",
   "author": "Pascal",
   "license": "MIT",
-  "scripts":{
-      "bot": "node index.js"
-    },
+  "scripts": {
+    "bot": "node index.js",
+    "bundle": "mkdir -p dist; esbuild index.js --minify --bundle --platform=node --outfile=dist/marmalade_ng_sweep_bot.js"
+  },
   "dependencies": {
     "@kadena/client": "^1.8.1",
     "@kadena/cryptography-utils": "^0.3.8",
     "yaml": "^2.3.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.1"
   }
 }
